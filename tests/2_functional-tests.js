@@ -15,8 +15,8 @@ suite('Functional Tests', function () {
         .request(server)
         .get('/hello')
         .end(function (err, res) {
-          assert.fail(res.status, 200);
-          assert.fail(res.text, 'hello Guest');
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'hello Guest');
           done();
         });
     });
@@ -26,8 +26,8 @@ suite('Functional Tests', function () {
         .request(server)
         .get('/hello?name=xy_z')
         .end(function (err, res) {
-          assert.fail(res.status, 200);
-          assert.fail(res.text, 'hello xy_z');
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'hello xy_z');
           done();
         });
     });
@@ -36,10 +36,12 @@ suite('Functional Tests', function () {
       chai
         .request(server)
         .put('/travellers')
-
+        .send({surname: "Colombo"})
         .end(function (err, res) {
-          assert.fail();
-
+          assert.equal(res.status, 200);
+          assert.equal(res.type, 'application/json')
+          assert.equal(res.body.name, 'Cristoforo')
+          assert.equal(res.body.surname, 'Colombo')
           done();
         });
     });
@@ -53,6 +55,7 @@ suite('Functional Tests', function () {
 });
 
 const Browser = require('zombie');
+const { name } = require('pug/lib');
 
 suite('Functional Tests with Zombie.js', function () {
   this.timeout(5000);
